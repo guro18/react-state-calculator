@@ -45,9 +45,11 @@ function App() {
       <div className="panel">
         <p>{firstPanelNum}</p>
         <div className="numbers">
-          {[...Array(10)].map((_, index) => (
-            <button key={index} onClick={() => handleClickPanel1(index)}>
-              {index === 9 ? "Clear" : index}
+          {[...Array(11)].map((_, index) => (
+            <button 
+            key={index} 
+            onClick={() => handleClickPanel1(index === 10 ? 0 : index)}>
+              {index === 10 ? "Clear" : index}
             </button>
           ))}
         </div>
@@ -66,9 +68,12 @@ function App() {
       <div className="panel">
         <p>{secondPanelNum}</p>
         <div className="numbers">
-          {[...Array(10)].map((_, index) => (
-              <button key={index} onClick={() => handleClickPanel2(index)}>
-                {index === 9 ? "Clear" : index}
+          {[...Array(11)].map((_, index) => (
+              <button 
+                key={index} 
+                onClick={() => handleClickPanel2(index === 10 ? 0 : index)}
+              >
+                {index === 10 ? "Clear" : index}
               </button>
             ))}
         </div>
