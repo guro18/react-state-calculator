@@ -2,17 +2,26 @@ import "./App.css"
 import { useState } from 'react';
 
 function App() {
-  const [firstPanelNum, updateFirstNum] = useState(0);
-  const [secondPanelNum, updateSecondNum] = useState(0);
+  const [firstPanelNumList, setFirstPanelNumList] = useState(['0']);
+  const [firstPanelNum, setFirstPanelNum] = useState(0);
+  const [secondPanelNumList, setSecondPanelNumList] = useState(['0']);
+  const [secondPanelNum, setSecondPanelNum] = useState(0);
   const [operator, setOperator] = useState('+');
   const [result, setResult] = useState(0);
 
-  const handleClickPanel1 = (num) => {
-    updateFirstNum(num);
+  const handlePanelInput = (num, setNumList, setNum) => {
+    const stringNum = String(num);
+
+    setNumList((prev) => {
+      const updatedList = prev[0] === '0' ? [stringNum] : [...prev, stringNum];
+      setNum(Number(updatedList.join('')));
+      return updatedList;
+    })
   };
 
-  const handleClickPanel2 = (num) => {
-    updateSecondNum(num)
+  const resetPanel = (setPanelNumList, setPanelNum) => {
+    setPanelNumList(['0']);
+    setPanelNum(0);
   };
 
   const updateOperator = (operator) => {
@@ -45,13 +54,22 @@ function App() {
       <div className="panel">
         <p>{firstPanelNum}</p>
         <div className="numbers">
-          {[...Array(11)].map((_, index) => (
+          {[...Array(10)].map((_, index) => (
             <button 
-            key={index} 
-            onClick={() => handleClickPanel1(index === 10 ? 0 : index)}>
-              {index === 10 ? "Clear" : index}
+              key={index} 
+              onClick={() => handlePanelInput(
+                index, 
+                setFirstPanelNumList, 
+                setFirstPanelNum)}
+            >
+              {index}
             </button>
           ))}
+          <button onClick={() => 
+            resetPanel(setFirstPanelNumList, setFirstPanelNum)
+          }>
+            clear
+          </button>
         </div>
       </div>
 
@@ -71,13 +89,22 @@ function App() {
           {[...Array(11)].map((_, index) => (
               <button 
                 key={index} 
-                onClick={() => handleClickPanel2(index === 10 ? 0 : index)}
+                onClick={() => handlePanelInput(
+                  index,
+                  setSecondPanelNumList,
+                  setSecondPanelNum)}
               >
-                {index === 10 ? "Clear" : index}
+                {index}
               </button>
             ))}
+            <button onClick={() => 
+              resetPanel(setSecondPanelNumList, setSecondPanelNum)
+            }>
+              clear
+          </button>
         </div>
       </div>
+
       <div className="panel answer">
         <p>{result}</p>
         <div>
