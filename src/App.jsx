@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./App.css"
 import { useState } from 'react';
 
@@ -8,6 +9,8 @@ function App() {
   const [secondPanelNum, setSecondPanelNum] = useState(0);
   const [operator, setOperator] = useState('+');
   const [result, setResult] = useState(0);
+  const [storedResult, setStoredResult] = useState();
+  const [storedMessage, setStoredMessage] = useState('');
 
   const handlePanelInput = (num, setNumList, setNum) => {
     const stringNum = String(num);
@@ -68,7 +71,13 @@ function App() {
           <button onClick={() => 
             resetPanel(setFirstPanelNumList, setFirstPanelNum)
           }>
-            clear
+            Clear
+          </button>
+          <button
+            onClick={() => {
+              setFirstPanelNum(storedResult);
+            }}>
+            Recall
           </button>
         </div>
       </div>
@@ -86,7 +95,7 @@ function App() {
       <div className="panel">
         <p>{secondPanelNum}</p>
         <div className="numbers">
-          {[...Array(11)].map((_, index) => (
+          {[...Array(10)].map((_, index) => (
               <button 
                 key={index} 
                 onClick={() => handlePanelInput(
@@ -100,7 +109,13 @@ function App() {
             <button onClick={() => 
               resetPanel(setSecondPanelNumList, setSecondPanelNum)
             }>
-              clear
+              Clear
+          </button>
+          <button
+            onClick={() => {
+              setSecondPanelNum(storedResult);
+            }}>
+            Recall
           </button>
         </div>
       </div>
@@ -109,6 +124,15 @@ function App() {
         <p>{result}</p>
         <div>
           <button onClick={() => computeTotal()}>=</button>
+          <button
+            onClick={() => {
+              setStoredResult(result);
+              setStoredMessage(`Succesfully stored ${result}`);
+            }}
+          >
+            Store
+          </button>
+            <p>{storedMessage}</p>
         </div>
       </div>
     </div>
