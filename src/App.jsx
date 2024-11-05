@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import "./App.css"
+import "./App.css";
 import { useState } from 'react';
 
 function App() {
@@ -16,7 +16,8 @@ function App() {
     const stringNum = String(num);
 
     setNumList((prev) => {
-      const updatedList = prev[0] === '0' ? [stringNum] : [...prev, stringNum];
+      const updatedList = prev[0] === '0' && prev[1] !== '.' ? 
+      [stringNum] : [...prev, stringNum];
       setNum(Number(updatedList.join('')));
       return updatedList;
     })
@@ -29,6 +30,14 @@ function App() {
 
   const updateOperator = (operator) => {
     setOperator(operator)
+  };
+
+  const commaSeparator = (list, setList) => {
+    if (list.includes('.')) {
+      return;
+    } else {
+      setList((prev) => [...prev, '.']);
+    }
   };
 
   const computeTotal = () => {
@@ -55,7 +64,7 @@ function App() {
   return (
     <div className="calculator">
       <div className="panel">
-        <p>{firstPanelNum}</p>
+        <p>{firstPanelNumList.join('')}</p>
         <div className="numbers">
           {[...Array(10)].map((_, index) => (
             <button 
@@ -76,8 +85,15 @@ function App() {
           <button
             onClick={() => {
               setFirstPanelNum(storedResult);
+              setFirstPanelNumList([String(storedResult)]);
             }}>
             Recall
+          </button>
+          <button
+            onClick={() => {
+              commaSeparator(firstPanelNumList, setFirstPanelNumList);
+            }}>
+            .
           </button>
         </div>
       </div>
@@ -93,10 +109,10 @@ function App() {
       </div>
 
       <div className="panel">
-        <p>{secondPanelNum}</p>
+        <p>{secondPanelNumList.join('')}</p>
         <div className="numbers">
           {[...Array(10)].map((_, index) => (
-              <button 
+              <button
                 key={index} 
                 onClick={() => handlePanelInput(
                   index,
@@ -114,8 +130,15 @@ function App() {
           <button
             onClick={() => {
               setSecondPanelNum(storedResult);
+              setSecondPanelNumList([String(storedResult)]);
             }}>
             Recall
+          </button>
+          <button
+            onClick={() => {
+              commaSeparator(secondPanelNumList, setSecondPanelNumList);
+            }}>
+            .
           </button>
         </div>
       </div>
@@ -127,7 +150,7 @@ function App() {
           <button
             onClick={() => {
               setStoredResult(result);
-              setStoredMessage(`Succesfully stored ${result}`);
+              setStoredMessage(`Stored ${result.toFixed(2)}`);
             }}
           >
             Store
@@ -139,4 +162,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
